@@ -1,23 +1,24 @@
 /***********************************************************
 	Filename: js/pc.js
-	Note	: pc¡¢ÊÖ»ú¡¢Æ½°åÖÕ¶ËÅĞ¶Ï
+	Note	: pcã€æ‰‹æœºã€å¹³æ¿ç»ˆç«¯åˆ¤æ–­
 	Version : 1.0
 	Web		: www.bjstos.com
 	Author  : bjstos
-	Update  : 2019Äê07ÔÂ01ÈÕ
-	PS£º¹Ø¼üµãÎªinitial-scaleÖµ£¬ĞèÒª»ñÈ¡ÒÆ¶¯Éè±¸µÄ¿í¶È£¬initial-scale = Éè±¸¿í¶È / ÍøÕ¾Ò³Ãæ¿í¶È
+	Update  : 2019å¹´07æœˆ01æ—¥
+	PSï¼šå…³é”®ç‚¹ä¸ºinitial-scaleå€¼ï¼Œéœ€è¦è·å–ç§»åŠ¨è®¾å¤‡çš„å®½åº¦ï¼Œinitial-scale = è®¾å¤‡å®½åº¦ / ç½‘ç«™é¡µé¢å®½åº¦
 ***********************************************************/
 
-var deviceWidth = parseInt(window.screen.width);  //»ñÈ¡µ±Ç°Éè±¸µÄÆÁÄ»¿í¶È 
+var deviceWidth = parseInt(window.screen.width);  //è·å–å½“å‰è®¾å¤‡çš„å±å¹•å®½åº¦ ï¼Œç¬”è®°æœ¬çš„å±å¹•å®½åº¦æ˜¯1366
+//alert("deviceWidth:" + deviceWidth );
 
-var deviceScale = deviceWidth / 1200;  //µÃµ½µ±Ç°Éè±¸ÆÁÄ»Óë120Ö®¼äµÄ±ÈÀı£¬Ö®ºóÎÒÃÇ¾Í¿ÉÒÔ½«ÍøÒ³¿í¶È¹Ì¶¨Îª1200px 
-
+var deviceScale = deviceWidth / 1200;  //å¾—åˆ°å½“å‰è®¾å¤‡å±å¹•ä¸1200ä¹‹é—´çš„æ¯”ä¾‹ï¼Œä¹‹åæˆ‘ä»¬å°±å¯ä»¥å°†ç½‘é¡µå®½åº¦å›ºå®šä¸º1200px 
 //alert("deviceScale:" + deviceScale );
 	
 var os = function (){
 	var ua = navigator.userAgent,
 	isWindowsPhone = /(?:Windows Phone)/.test(ua),
-	isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone,
+	isBlackBerry = /(?:BlackBerry)/.test(ua),
+	isSymbian = /(?:SymbianOS)/.test(ua) || isWindowsPhone || isBlackBerry,	
 	isAndroid = /(?:Android)/.test(ua),
 	isFireFox = /(?:Firefox)/.test(ua),
 	isChrome = /(?:Chrome|CriOS)/.test(ua),
@@ -28,16 +29,26 @@ var os = function (){
 		isTablet: isTablet,
 		isPhone: isPhone,
 		isAndroid: isAndroid,
+		isSymbian: isSymbian,
 		isPc: isPc
 	};	
 }();
 
+function callphone(){
+	var url = "tel:010-87713983";//å®šä¹‰ä¸€ä¸ªè¶…é“¾æ¥åœ°å€
+	var isTrue = confirm("è¯·æ‹¨æ‰“ç”µè¯è”ç³»æˆ‘ä»¬ï¼Œè°¢è°¢");
+
+	if (isTrue){
+		window.location.href = url;
+		}
+}
+
 /*
-//×¢ÊÍ²¿·ÖÓĞÊ±ºò¶ÔiphoneÎŞĞ§
+//æ³¨é‡Šéƒ¨åˆ†æœ‰æ—¶å€™å¯¹iphoneæ— æ•ˆ
 if (!os.isPc) 
 	{
 		
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//Ìæ»»±äÁ¿deviceScale		
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//æ›¿æ¢å˜é‡deviceScale		
 		document.write('<meta name="apple-mobile-web-app-capable" content="yes">');
 		document.write('<meta name="full-screen" content="yes">');
 		document.write('<meta name="x5-fullscreen" content="true">');
@@ -50,7 +61,7 @@ else if (os.isPc)
 else if (os.isTablet) 
 {
 		alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />111');
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//Ìæ»»±äÁ¿deviceScale
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//æ›¿æ¢å˜é‡deviceScale
 		
 		document.write('<meta name="apple-mobile-web-app-capable" content="yes">');
 		document.write('<meta name="full-screen" content="yes">');
@@ -59,40 +70,32 @@ else if (os.isTablet)
 }
 */
 
-//¾­¹ıµ÷Ê½£¬ĞèÒª·Ö±ğÅĞ¶Ï½øĞĞÒ³Ãæ³õÊ¼Öµinitial-scaleÊÊÅä£¬°²×¿¡¢iphone¡¢ipad¾ùµ÷Ê½Í¨¹ı
-if (os.isAndroid)
+//ç»è¿‡è°ƒå¼ï¼Œéœ€è¦åˆ†åˆ«åˆ¤æ–­è¿›è¡Œé¡µé¢åˆå§‹å€¼initial-scaleé€‚é…ï¼Œå®‰å“ã€iphoneã€ipadå‡è°ƒå¼é€šè¿‡
+if (os.isAndroid || os.isPhone || os.isSymbian)
 	{   
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//Ìæ»»±äÁ¿deviceScale
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1">');		//æ›¿æ¢å˜é‡deviceScale
 		document.write('<meta name="apple-mobile-web-app-capable" content="yes">');
 		document.write('<meta name="full-screen" content="yes">');
 		document.write('<meta name="x5-fullscreen" content="true">');
-		alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />isAndroid');
-	} 
-else if(os.isPhone)
-	{
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1" />');		//Ìæ»»±äÁ¿deviceScale
-		//alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />');
-		document.write('<meta name="apple-mobile-web-app-capable" content="yes">');
-		document.write('<meta name="full-screen" content="yes">');
-		document.write('<meta name="x5-fullscreen" content="true">');
-		alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />isPhone');
-		
+		document.write('<meta name="format-detection" content ="telephone=yes">');
+		//alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />isAndroid os.isPhone');
+		setTimeout("callphone()", 4*1000);
 	} 
 else if (os.isTablet)
 	{
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1">');				//Ìæ»»±äÁ¿deviceScale
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1">');				//æ›¿æ¢å˜é‡deviceScale
 		document.write('<meta name="apple-mobile-web-app-capable" content="yes">');
 		document.write('<meta name="full-screen" content="yes">');
 		document.write('<meta name="x5-fullscreen" content="true">');
-		alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />isTablet');
+		//alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />isTablet');
 	} 
 else if (os.isPc) 
 	{
 		document.write('<meta name="viewport" content="width=device-width,initial-scale=1">');
+		document.write('<meta name="format-detection" content ="telephone=no">');
+		//alert("ispc" );
 	}
 else
 	{
-		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1">');				//Ìæ»»±äÁ¿deviceScale
-		alert('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1.0" />else');
+		document.write('<meta name="viewport" content="width=device-width,initial-scale=' + deviceScale + ',maximum-scale=1">');				
 	}
-
